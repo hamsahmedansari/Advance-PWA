@@ -1,0 +1,21 @@
+{
+  "name": "advance-pwa",
+  "version": "1.0.0",
+  "description": "A complete PWA",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -c-1"
+  },
+  "keywords": [
+    "pwa",
+    "progressive",
+    "web",
+    "app",
+    "complete"
+  ],
+  "author": "Hamsahmedansari",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.10.0"
+  }
+}
