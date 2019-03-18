@@ -40,6 +40,38 @@ self.addEventListener("activate", e => {
   );
 });
 // Fetch - its fetch all request i.e HTML,CSS,IMAGE,fetch from server
-self.addEventListener("fetch", e => {
-  e.respondWith(caches.match(e.request));
-});
+
+// FIRST_CHECK_CACHE_THEN_NETWORK
+//
+// self.addEventListener("fetch", e => {
+//   e.respondWith(
+//     caches.match(e.request).then(res => {
+//       if (res) return res;
+//       else
+//         return fetch(e.request)
+//           .then(response => {
+//             return caches.open(DYNAMIC_CACHE).then(cache => {
+//               cache.put(e.request.url, response.clone());
+//               return response;
+//             });
+//           })
+//           .catch(err => {
+//             return caches.open(STATIC_CACHE).then(cache => {
+//               return cache.match("offline.html");
+//             });
+//           });
+//     })
+//   );
+// });
+
+// CACHE_ONLY
+//
+// self.addEventListener("fetch", e => {
+//   e.respondWith(caches.match(e.request));
+// });
+
+// NETWORK_ONLY
+//
+// self.addEventListener("fetch", e => {
+//   e.respondWith(fetch(e.request));
+// });
