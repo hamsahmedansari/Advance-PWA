@@ -1,4 +1,4 @@
-var STATIC_CACHE = "static-v4";
+var STATIC_CACHE = "static-v5";
 var DYNAMIC_CACHE = "dynamic-v1";
 // install
 self.addEventListener("install", e => {
@@ -41,22 +41,5 @@ self.addEventListener("activate", e => {
 });
 // Fetch - its fetch all request i.e HTML,CSS,IMAGE,fetch from server
 self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request).then(res => {
-      if (res) return res;
-      else
-        return fetch(e.request)
-          .then(response => {
-            return caches.open(DYNAMIC_CACHE).then(cache => {
-              cache.put(e.request.url, response.clone());
-              return response;
-            });
-          })
-          .catch(err => {
-            return caches.open(STATIC_CACHE).then(cache => {
-              return cache.match("offline.html");
-            });
-          });
-    })
-  );
+  e.respondWith(caches.match(e.request));
 });
