@@ -44,6 +44,14 @@ self.addEventListener("activate", e => {
 
 // FIRST_CHECK_CACHE_THEN_NETWORK
 //
+
+function isInArray(string, array) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === string) return true;
+  }
+  return false;
+}
+
 self.addEventListener("fetch", e => {
   var url = "https://httpbin.org/get";
   if (e.request.url.indexOf(url) > -1) {
@@ -55,9 +63,7 @@ self.addEventListener("fetch", e => {
         });
       })
     );
-  } else if (
-    new RegExp("\\b" + STATIC_FILES.join("\\b|\\b") + "\\b").test(e.request.url)
-  ) {
+  } else if (isInArray(e.request.url, STATIC_FILES)) {
     e.respondWith(caches.match(e.request));
   } else {
     e.respondWith(
