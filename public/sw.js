@@ -1,4 +1,4 @@
-var STATIC_CACHE = "static-v5";
+var STATIC_CACHE = "static-v4";
 var DYNAMIC_CACHE = "dynamic-v1";
 // install
 self.addEventListener("install", e => {
@@ -63,6 +63,30 @@ self.addEventListener("activate", e => {
 //     })
 //   );
 // });
+
+// FIRST_CHECK_NETWORK_THEN_CACHE
+//
+self.addEventListener("fetch", e => {
+  e.respondWith(
+    fetch(e.request)
+      .then(response => {
+        return caches.open(DYNAMIC_CACHE).then(cache => {
+          cache.put(e.request.url, response.clone());
+          return response;
+        });
+      })
+      .catch(err => {
+        return caches.match(e.request).then(cache => {
+          if (cache) return cache;
+          else {
+            return caches.open(STATIC_CACHE).then(cache => {
+              return cache.match("offline.html");
+            });
+          }
+        });
+      })
+  );
+});
 
 // CACHE_ONLY
 //
