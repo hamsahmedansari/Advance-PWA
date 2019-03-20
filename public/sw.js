@@ -1,9 +1,12 @@
-var STATIC_CACHE = "static-v9";
+importScripts("/src/js/idb.js");
+
+var STATIC_CACHE = "static-v10";
 var DYNAMIC_CACHE = "dynamic-v2";
 var STATIC_FILES = [
   "/",
   "/index.html",
   "/offline.html",
+  "/src/js/idb.js",
   "/src/js/app.js",
   "/src/js/feed.js",
   "/src/js/material.min.js",
