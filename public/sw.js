@@ -1,4 +1,5 @@
 importScripts("/src/js/idb.js");
+importScripts("/src/js/utility.js");
 
 var STATIC_CACHE = "static-v10";
 var DYNAMIC_CACHE = "dynamic-v2";
@@ -17,15 +18,6 @@ var STATIC_FILES = [
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css"
 ];
-
-// DbIndex Create Store
-//idb.open(nameStore,version,callback)
-var DbPromise = idb.open("post", 1, db => {
-  // db.createObjectStore(nameStore, object)
-  if (!db.objectStoreNames.contains("post")) {
-    db.createObjectStore("post", { keyPath: "_id" });
-  }
-});
 
 // install
 self.addEventListener("install", e => {
@@ -73,12 +65,7 @@ self.addEventListener("fetch", e => {
         let cloneRes = res.clone();
         cloneRes.json().then(({ data }) => {
           data.forEach(element => {
-            DbPromise.then(db => {
-              let tx = db.transaction("post", "readwrite");
-              let store = tx.objectStore("post");
-              store.put(element);
-              return tx.complete;
-            });
+            writeDb("post", element);
           });
         });
 
