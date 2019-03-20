@@ -17,6 +17,16 @@ var STATIC_FILES = [
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css"
 ];
+
+// DbIndex Create Store
+//idb.open(nameStore,version,callback)
+var DbPromise = idb.open("post", 1, db => {
+  // db.createObjectStore(nameStore, object)
+  if (!db.objectStoreNames.contains("post")) {
+    db.createObjectStore("post", { keyPath: "_id" });
+  }
+});
+
 // install
 self.addEventListener("install", e => {
   console.log("[Service Worker] is installing ...", e);
@@ -59,11 +69,20 @@ self.addEventListener("fetch", e => {
   var url = "http://localhost:3000/post";
   if (e.request.url.indexOf(url) > -1) {
     e.respondWith(
-      caches.open(DYNAMIC_CACHE).then(cache => {
-        return fetch(e.request).then(res => {
-          cache.put(e.request, res.clone());
-          return res;
+      fetch(e.request).then(res => {
+        let cloneRes = res.clone();
+        cloneRes.json().then(({ data }) => {
+          data.forEach(element => {
+            DbPromise.then(db => {
+              let tx = db.transaction("post", "readwrite");
+              let store = tx.objectStore("post");
+              store.put(element);
+              return tx.complete;
+            });
+          });
         });
+
+        return res;
       })
     );
   } else if (isInArray(e.request.url, STATIC_FILES)) {
