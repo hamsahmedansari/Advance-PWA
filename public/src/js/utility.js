@@ -32,3 +32,12 @@ function clearDb(store) {
     return tx.complete;
   });
 }
+
+function deleteSingle(store, id) {
+  return DbPromise.then(db => {
+    let tx = db.transaction(store, "readwrite");
+    let st = tx.objectStore(store);
+    st.delete(id);
+    return tx.complete;
+  }).then(console.log("Item Removed"));
+}
