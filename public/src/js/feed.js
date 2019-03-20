@@ -97,16 +97,22 @@ fetch(url)
     updateUI(data.data);
   });
 
-if ("caches" in window) {
-  caches
-    .match(url)
-    .then(res => {
-      if (res) return res.json();
-    })
-    .then(res => {
-      if (!isNetworkReceived) {
-        console.log("[Feed] loading from cache ...", res);
-        updateUI(res.data);
-      }
-    });
+if ("indexedDB" in window) {
+  readDB("post").then(res => {
+    if (!isNetworkReceived) {
+      console.log("[Feed] loading from cache ...", res);
+      updateUI(res);
+    }
+  });
+  // caches
+  //   .match(url)
+  //   .then(res => {
+  //     if (res) return res.json();
+  //   })
+  //   .then(res => {
+  //     if (!isNetworkReceived) {
+  //       console.log("[Feed] loading from cache ...", res);
+  //       updateUI(res.data);
+  //     }
+  //   });
 }

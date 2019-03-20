@@ -15,3 +15,11 @@ function writeDb(store, data) {
     return tx.complete;
   });
 }
+
+function readDB(store) {
+  return DbPromise.then(db => {
+    let tx = db.transaction(store, "readonly");
+    let st = tx.objectStore(store);
+    return st.getAll();
+  });
+}
