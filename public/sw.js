@@ -63,11 +63,15 @@ self.addEventListener("fetch", e => {
     e.respondWith(
       fetch(e.request).then(res => {
         let cloneRes = res.clone();
-        cloneRes.json().then(({ data }) => {
-          data.forEach(element => {
-            writeDb("post", element);
+        clearDb("post")
+          .then(() => {
+            return cloneRes.json();
+          })
+          .then(({ data }) => {
+            data.forEach(element => {
+              writeDb("post", element);
+            });
           });
-        });
 
         return res;
       })

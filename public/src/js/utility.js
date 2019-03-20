@@ -23,3 +23,12 @@ function readDB(store) {
     return st.getAll();
   });
 }
+
+function clearDb(store) {
+  return DbPromise.then(db => {
+    let tx = db.transaction(store, "readwrite");
+    let st = tx.objectStore(store);
+    st.clear();
+    return tx.complete;
+  });
+}
