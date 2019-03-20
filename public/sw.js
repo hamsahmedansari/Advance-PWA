@@ -1,4 +1,4 @@
-var STATIC_CACHE = "static-v6";
+var STATIC_CACHE = "static-v9";
 var DYNAMIC_CACHE = "dynamic-v2";
 var STATIC_FILES = [
   "/",
@@ -53,7 +53,7 @@ function isInArray(string, array) {
 }
 
 self.addEventListener("fetch", e => {
-  var url = "https://httpbin.org/get";
+  var url = "http://localhost:3000/post";
   if (e.request.url.indexOf(url) > -1) {
     e.respondWith(
       caches.open(DYNAMIC_CACHE).then(cache => {
