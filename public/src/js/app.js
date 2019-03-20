@@ -7,9 +7,9 @@ if ("serviceWorker" in navigator) {
 }
 
 // Before Installing/Adding to home this event will fire
-window.addEventListener("beforeinstallprompt", e => {
-  console.log("[AddToHome] before installing prompt is fired ...", e);
-  e.preventDefault();
-  deferredPrompt = e;
-  return false; //false for not installing on chrome smart time
-});
+// window.addEventListener("beforeinstallprompt", e => {
+//   console.log("[AddToHome] before installing prompt is fired ...", e);
+//   e.preventDefault();
+//   deferredPrompt = e;
+//   return false; //false for not installing on chrome smart time
+// });
