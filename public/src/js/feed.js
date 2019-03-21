@@ -76,6 +76,12 @@ function createCard(data) {
   componentHandler.upgradeElement(cardWrapper);
   sharedMomentsArea.appendChild(cardWrapper);
 }
+function addNotification(params) {
+  let snackbarContainer = document.querySelector("#confirmation-toast");
+  let data = { message: params };
+  snackbarContainer.MaterialSnackbar.showSnackbar(data);
+}
+
 function clearCards() {
   while (sharedMomentsArea.hasChildNodes()) {
     sharedMomentsArea.removeChild(sharedMomentsArea.lastChild);
@@ -137,7 +143,10 @@ function sendData() {
       console.log("Sent data", res);
       return res.json();
     })
-    .then(({ data }) => createCard(data));
+    .then(({ data }) => {
+      createCard(data);
+      addNotification("Your Post was saved for syncing!");
+    });
 }
 
 form.addEventListener("submit", function(event) {
@@ -165,9 +174,8 @@ form.addEventListener("submit", function(event) {
           return sw.sync.register("sync-new-post");
         })
         .then(() => {
-          let snackbarContainer = document.querySelector("#confirmation-toast");
-          let data = { message: "Your Post was saved for syncing!" };
-          snackbarContainer.MaterialSnackbar.showSnackbar(data);
+          createCard(post);
+          addNotification("Your Post was saved for syncing!");
         })
         .catch(err => console.log(err));
     });
