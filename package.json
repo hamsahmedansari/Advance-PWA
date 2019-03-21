@@ -4,7 +4,7 @@
   "description": "A complete PWA",
   "main": "index.js",
   "scripts": {
-    "start": "http-server -c-1"
+    "start": "serve public"
   },
   "keywords": [
     "pwa",
@@ -17,5 +17,8 @@
   "license": "ISC",
   "devDependencies": {
     "http-server": "^0.10.0"
+  },
+  "dependencies": {
+    "serve": "^10.1.2"
   }
 }
