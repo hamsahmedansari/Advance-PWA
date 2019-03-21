@@ -158,8 +158,7 @@ self.addEventListener("push", e => {
     badge: "/src/images/icons/apple-icon-57x57.png",
     dir: "ltr",
     lang: "en-US",
-    vibrate: [100, 50, 100],
-    renotify: true
+    vibrate: [100, 50, 100]
   };
   e.waitUntil(self.registration.showNotification(data.title, option));
 });
