@@ -4,7 +4,7 @@
   "description": "A complete PWA",
   "main": "index.js",
   "scripts": {
-    "start": "serve "
+    "start": "nodemon index.js"
   },
   "keywords": [
     "pwa",
