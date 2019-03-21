@@ -93,7 +93,7 @@ function updateUI(data) {
     createCard(data[i]);
   }
 }
-var url = "https://hamsahmedansari-todo-server.herokuapp.com/post";
+var url = config() + "/post";
 var isNetworkReceived = false;
 
 fetch(url)

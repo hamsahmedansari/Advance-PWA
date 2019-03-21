@@ -92,3 +92,8 @@ function urlBase64ToUint8Array(base64String) {
   }
   return outputArray;
 }
+
+function config() {
+  // return "http://localhost:5000";
+  return "https://hamsahmedansari-todo-server.herokuapp.com";
+}

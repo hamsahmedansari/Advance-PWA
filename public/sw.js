@@ -58,7 +58,7 @@ function isInArray(string, array) {
 }
 
 self.addEventListener("fetch", e => {
-  var url = "https://hamsahmedansari-todo-server.herokuapp.com/post";
+  var url = config() + "/post";
   if (e.request.url.indexOf(url) > -1) {
     e.respondWith(
       fetch(e.request).then(res => {
@@ -105,7 +105,7 @@ self.addEventListener("fetch", e => {
 
 self.addEventListener("sync", e => {
   console.log("[Service Worker] Background Sync ...", e);
-  let url = "https://hamsahmedansari-todo-server.herokuapp.com/post";
+  let url = config() + "/post";
   if (e.tag === "sync-new-post") {
     console.log("[Service Worker] Sync-New-Post");
     e.waitUntil(
@@ -141,9 +141,29 @@ self.addEventListener("notificationclick", e => {
   console.log("[Service Worker] Notification is clicked ", notification);
   console.log("[Service Worker] Notification is clicked ", action);
 });
+
 self.addEventListener("notificationclose", e => {
   console.log("[Service Worker] Notification is closed ", e);
 });
+
+self.addEventListener("push", e => {
+  console.log("[Service Worker] Notification is push ", e);
+  let data = { title: "Post", content: "Post Content" };
+  if (e.data) {
+    data = JSON.parse(e.data.text());
+  }
+  let option = {
+    body: data.content,
+    icon: "/src/images/icons/apple-icon-57x57.png",
+    badge: "/src/images/icons/apple-icon-57x57.png",
+    dir: "ltr",
+    lang: "en-US",
+    vibrate: [100, 50, 100],
+    renotify: true
+  };
+  e.waitUntil(self.registration.showNotification(data.title, option));
+});
+
 // FIRST_CHECK_CACHE_THEN_FallBack
 //
 // self.addEventListener("fetch", e => {
