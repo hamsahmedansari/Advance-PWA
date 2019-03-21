@@ -10,11 +10,13 @@ if ("serviceWorker" in navigator) {
     .catch(err => console.error("[Service Worker] has Error", err));
 }
 
-function createNotification(params) {
-  let option = {
-    body: "You Have Successfully Subscribe To Notification"
-  };
-  new Notification("Successfully Subscribe", option);
+function createNotification(title, body = null) {
+  if ("serviceWorker" in navigator) {
+    let option = { body };
+    navigator.serviceWorker.ready.then(sw => {
+      sw.showNotification(title, option);
+    });
+  }
 }
 
 function askForNotificationPermission() {
@@ -23,7 +25,10 @@ function askForNotificationPermission() {
     if (result !== "granted") {
       console.log("No notification permission granted!");
     } else {
-      createNotification(null);
+      createNotification(
+        "Successfully Subscribe",
+        "You Have Successfully Subscribe To Notification"
+      );
     }
     for (let i = 0; i < enableNotificationsButtons.length; i++) {
       enableNotificationsButtons[i].style.display = "none";
