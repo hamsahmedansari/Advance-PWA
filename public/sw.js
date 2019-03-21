@@ -134,6 +134,14 @@ self.addEventListener("sync", e => {
   }
 });
 
+self.addEventListener("notificationclick", e => {
+  let notification = e.notification;
+  let action = e.action;
+  console.log("[Service Worker] Notification is clicked ", e);
+  console.log("[Service Worker] Notification is clicked ", notification);
+  console.log("[Service Worker] Notification is clicked ", action);
+});
+
 // FIRST_CHECK_CACHE_THEN_FallBack
 //
 // self.addEventListener("fetch", e => {

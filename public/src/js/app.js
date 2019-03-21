@@ -10,10 +10,14 @@ if ("serviceWorker" in navigator) {
     .catch(err => console.error("[Service Worker] has Error", err));
 }
 
-function createNotification(title, body = null) {
-  // if (Notification.permission == 'granted') {
-  //   navigator.serviceWorker.getRegistration().then(function(reg) {
-  //     var options = {
+function createNotification(
+  title,
+  body = null,
+  image = null,
+  tag = null,
+  action = null,
+  data = null
+) {
   //       body: 'Here is a notification body!',
   //       icon: 'images/example.png',
   //       vibrate: [100, 50, 100],
@@ -27,12 +31,22 @@ function createNotification(title, body = null) {
   //         {action: 'close', title: 'Close notification',
   //           icon: '/src/images/icons/apple-icon-57x57.png'},
   //       ]
-  //     };
-  //     reg.showNotification('Hello world!', options);
-  //   });
-  // }
+
   if ("serviceWorker" in navigator) {
-    let option = { body };
+    let option = {
+      body,
+      icon: "/src/images/icons/apple-icon-57x57.png",
+      badge: "/src/images/icons/apple-icon-57x57.png",
+      dir: "ltr",
+      lang: "en-US",
+      vibrate: [100, 50, 100],
+      renotify: true
+    };
+    if (image) option.image = image;
+    if (tag) option.tag = tag;
+    if (action) option.action = action;
+    if (data) option.data = data;
+
     navigator.serviceWorker.ready.then(sw => {
       sw.showNotification(title, option);
     });
@@ -47,7 +61,16 @@ function askForNotificationPermission() {
     } else {
       createNotification(
         "Successfully Subscribe",
-        "You Have Successfully Subscribe To Notification"
+        "You Have Successfully Subscribe To Notification",
+        "https://www.samaa.tv/wp-content/uploads/2017/09/Karachi-640x405.jpg",
+        "welcome",
+        [
+          {
+            action: "explore",
+            title: "Explore this new world",
+            icon: "https://image.flaticon.com/icons/png/512/471/471012.png"
+          }
+        ]
       );
     }
     for (let i = 0; i < enableNotificationsButtons.length; i++) {
