@@ -4,7 +4,7 @@
   "description": "A complete PWA",
   "main": "index.js",
   "scripts": {
-    "start": "serve public"
+    "start": "serve "
   },
   "keywords": [
     "pwa",
