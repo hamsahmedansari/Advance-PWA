@@ -44,7 +44,7 @@ function createNotification(
     };
     if (image) option.image = image;
     if (tag) option.tag = tag;
-    if (action) option.action = action;
+    if (action) option.actions = action;
     if (data) option.data = data;
     console.log(option);
 
@@ -69,7 +69,7 @@ function askForNotificationPermission() {
           {
             action: "explore",
             title: "Explore this new world",
-            icon: "https://image.flaticon.com/icons/png/512/471/471012.png"
+            icon: "/src/images/icons/apple-icon-57x57.png"
           }
         ]
       );
