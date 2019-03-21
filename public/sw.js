@@ -1,7 +1,7 @@
 importScripts("/src/js/idb.js");
 importScripts("/src/js/utility.js");
 
-var STATIC_CACHE = "static-v12";
+var STATIC_CACHE = "static-v13";
 var DYNAMIC_CACHE = "dynamic-v2";
 var STATIC_FILES = [
   "/",
