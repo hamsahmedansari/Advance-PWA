@@ -141,7 +141,9 @@ self.addEventListener("notificationclick", e => {
   console.log("[Service Worker] Notification is clicked ", notification);
   console.log("[Service Worker] Notification is clicked ", action);
 });
-
+self.addEventListener("notificationclose", e => {
+  console.log("[Service Worker] Notification is closed ", e);
+});
 // FIRST_CHECK_CACHE_THEN_FallBack
 //
 // self.addEventListener("fetch", e => {

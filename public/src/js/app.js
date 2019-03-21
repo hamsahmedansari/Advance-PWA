@@ -10,50 +10,6 @@ if ("serviceWorker" in navigator) {
     .catch(err => console.error("[Service Worker] has Error", err));
 }
 
-function createNotification(
-  title,
-  body = null,
-  image = null,
-  tag = null,
-  action = null,
-  data = null
-) {
-  //       body: 'Here is a notification body!',
-  //       icon: 'images/example.png',
-  //       vibrate: [100, 50, 100],
-  //       data: {
-  //         dateOfArrival: Date.now(),
-  //         primaryKey: 1
-  //       },
-  //       actions: [
-  //         {action: 'explore', title: 'Explore this new world',
-  //           icon: '/src/images/icons/apple-icon-57x57.png'},
-  //         {action: 'close', title: 'Close notification',
-  //           icon: '/src/images/icons/apple-icon-57x57.png'},
-  //       ]
-
-  if ("serviceWorker" in navigator) {
-    let option = {
-      body,
-      icon: "/src/images/icons/apple-icon-57x57.png",
-      badge: "/src/images/icons/apple-icon-57x57.png",
-      dir: "ltr",
-      lang: "en-US",
-      vibrate: [100, 50, 100],
-      renotify: true
-    };
-    if (image) option.image = image;
-    if (tag) option.tag = tag;
-    if (action) option.actions = action;
-    if (data) option.data = data;
-    console.log(option);
-
-    navigator.serviceWorker.ready.then(sw => {
-      sw.showNotification(title, option);
-    });
-  }
-}
-
 function askForNotificationPermission() {
   Notification.requestPermission(function(result) {
     console.log("User Choice", result);
@@ -68,7 +24,7 @@ function askForNotificationPermission() {
         [
           {
             action: "explore",
-            title: "Explore this new world",
+            title: "Explore",
             icon: "/src/images/icons/apple-icon-57x57.png"
           }
         ]
