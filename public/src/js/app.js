@@ -46,6 +46,7 @@ function createNotification(
     if (tag) option.tag = tag;
     if (action) option.action = action;
     if (data) option.data = data;
+    console.log(option);
 
     navigator.serviceWorker.ready.then(sw => {
       sw.showNotification(title, option);
@@ -62,7 +63,7 @@ function askForNotificationPermission() {
       createNotification(
         "Successfully Subscribe",
         "You Have Successfully Subscribe To Notification",
-        "https://www.samaa.tv/wp-content/uploads/2017/09/Karachi-640x405.jpg",
+        "https://pixabay.com/static/img/no_hotlinking.png",
         "welcome",
         [
           {
