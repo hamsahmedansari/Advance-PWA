@@ -19,6 +19,6 @@
     "http-server": "^0.10.0"
   },
   "dependencies": {
-    "serve": "^10.1.2"
+    "express": "^4.16.4"
   }
 }
