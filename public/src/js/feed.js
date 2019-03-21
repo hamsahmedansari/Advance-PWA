@@ -87,7 +87,7 @@ function updateUI(data) {
     createCard(data[i]);
   }
 }
-var url = "http://localhost:3000/post";
+var url = "https://hamsahmedansari-todo-server.herokuapp.com/post";
 var isNetworkReceived = false;
 
 fetch(url)
@@ -119,6 +119,26 @@ if ("indexedDB" in window) {
   //     }
   //   });
 }
+function sendData() {
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify({
+      image:
+        "https://www.samaa.tv/wp-content/uploads/2017/09/Karachi-640x405.jpg",
+      title: titleInput.value,
+      location: locationInput.value
+    })
+  })
+    .then(function(res) {
+      console.log("Sent data", res);
+      return res.json();
+    })
+    .then(({ data }) => createCard(data));
+}
 
 form.addEventListener("submit", function(event) {
   event.preventDefault();
@@ -131,9 +151,27 @@ form.addEventListener("submit", function(event) {
   closeCreatePostModal();
 
   // syncManager
-  if ("serviceWorker" in navigator && "syncManager" in window) {
+  if ("serviceWorker" in navigator && "SyncManager" in window) {
     navigator.serviceWorker.ready.then(sw => {
-      sw.sync.register("sync-new-post");
+      let post = {
+        _id: new Date().toISOString(),
+        image:
+          "https://www.samaa.tv/wp-content/uploads/2017/09/Karachi-640x405.jpg",
+        title: titleInput.value,
+        location: locationInput.value
+      };
+      writeDb("sync-post", post)
+        .then(() => {
+          return sw.sync.register("sync-new-post");
+        })
+        .then(() => {
+          let snackbarContainer = document.querySelector("#confirmation-toast");
+          let data = { message: "Your Post was saved for syncing!" };
+          snackbarContainer.MaterialSnackbar.showSnackbar(data);
+        })
+        .catch(err => console.log(err));
     });
+  } else {
+    sendData();
   }
 });

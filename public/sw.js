@@ -1,7 +1,7 @@
 importScripts("/src/js/idb.js");
 importScripts("/src/js/utility.js");
 
-var STATIC_CACHE = "static-v11";
+var STATIC_CACHE = "static-v12";
 var DYNAMIC_CACHE = "dynamic-v2";
 var STATIC_FILES = [
   "/",
@@ -58,7 +58,7 @@ function isInArray(string, array) {
 }
 
 self.addEventListener("fetch", e => {
-  var url = "http://localhost:3000/post";
+  var url = "https://hamsahmedansari-todo-server.herokuapp.com/post";
   if (e.request.url.indexOf(url) > -1) {
     e.respondWith(
       fetch(e.request).then(res => {
@@ -96,6 +96,39 @@ self.addEventListener("fetch", e => {
                   return cache.match("offline.html");
               });
             });
+      })
+    );
+  }
+});
+
+// SyncManager
+
+self.addEventListener("sync", e => {
+  console.log("[Service Worker] Background Sync ...", e);
+  let url = "https://hamsahmedansari-todo-server.herokuapp.com/post";
+  if (e.tag === "sync-new-post") {
+    console.log("[Service Worker] Sync-New-Post");
+    e.waitUntil(
+      readDB("sync-post").then(data => {
+        for (const iterator of data) {
+          fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            },
+            body: JSON.stringify({
+              image: iterator.image,
+              title: iterator.title,
+              location: iterator.location
+            })
+          })
+            .then(function() {
+              deleteSingle("sync-post", iterator._id);
+              console.log("delete", iterator._id);
+            })
+            .catch(err => console.log(err));
+        }
       })
     );
   }
