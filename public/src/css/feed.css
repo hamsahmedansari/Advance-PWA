@@ -18,6 +18,7 @@
   max-width: 100%;
   display: none;
   margin: auto;
+  margin-bottom: 10px;
 }
 
 #create-post #pick-image {
@@ -26,6 +27,13 @@
 
 #create-post #capture-btn {
   margin: 10px auto;
+}
+#retake-btn {
+  display: none;
+  margin: auto;
+}
+#randomIMG {
+  display: none;
 }
 .main-image {
   max-width: 100%;
@@ -47,4 +55,7 @@
 }
 .shared-moment-card {
   margin: auto;
+}
+.mdl-snackbar {
+  z-index: 1000000000000000;
 }

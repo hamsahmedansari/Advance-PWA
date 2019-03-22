@@ -10,9 +10,12 @@ var locationInput = document.querySelector("#location");
 var videoPlayer = document.querySelector("#player");
 var canvasElement = document.querySelector("#canvas");
 var captureButton = document.querySelector("#capture-btn");
+var RetakeButton = document.querySelector("#retake-btn");
+var RandomButton = document.querySelector("#random-btn");
 var imagePicker = document.querySelector("#image-picker");
 var imagePickerArea = document.querySelector("#pick-image");
 
+//
 function initializeMedia() {
   if (!("mediaDevices" in navigator)) {
     navigator.mediaDevices = {};
@@ -42,12 +45,17 @@ function initializeMedia() {
     .catch(function(err) {
       imagePickerArea.style.display = "block";
     });
+
+  addNotification(
+    "Note Your Image is Not Uploading to anywhere & We Use Random Image"
+  );
 }
 
 captureButton.addEventListener("click", function(event) {
   canvasElement.style.display = "block";
   videoPlayer.style.display = "none";
   captureButton.style.display = "none";
+  RetakeButton.style.display = "inline-block";
   var context = canvasElement.getContext("2d");
   context.drawImage(
     videoPlayer,
@@ -59,6 +67,47 @@ captureButton.addEventListener("click", function(event) {
   videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
     track.stop();
   });
+  addNotification(
+    "Note Your Image is Not Uploading to anywhere & We Use Random Image"
+  );
+});
+
+RetakeButton.addEventListener("click", function(event) {
+  canvasElement.style.display = "none";
+  RetakeButton.style.display = "none";
+  videoPlayer.style.display = "block";
+  captureButton.style.display = "inline-block";
+  navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then(function(stream) {
+      videoPlayer.srcObject = stream;
+      videoPlayer.style.display = "block";
+    })
+    .catch(function(err) {
+      imagePickerArea.style.display = "block";
+    });
+  addNotification(
+    "Note Your Image is Not Uploading to anywhere & We Use Random Image"
+  );
+});
+
+RandomButton.addEventListener("click", function(event) {
+  canvasElement.style.display = "block";
+  videoPlayer.style.display = "none";
+  captureButton.style.display = "none";
+  RetakeButton.style.display = "inline-block";
+  var context = canvasElement.getContext("2d");
+  let image = document.getElementById("randomIMG");
+  context.drawImage(image, 0, 0, 400, 200);
+  videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
+    track.stop();
+  });
+  document.getElementById("randomDiv").removeChild(image);
+  let random = Math.floor(Math.random() * 99) + 1;
+  let img = document.createElement("img");
+  img.src = `https://picsum.photos/400/200/?image=${random}`;
+  img.id = "randomIMG";
+  document.getElementById("randomDiv").appendChild(img);
 });
 
 function openCreatePostModal() {
@@ -190,6 +239,7 @@ if ("indexedDB" in window) {
   //   });
 }
 function sendData() {
+  let image = document.getElementById("randomIMG").getAttribute("src");
   fetch(url, {
     method: "POST",
     headers: {
@@ -197,8 +247,7 @@ function sendData() {
       Accept: "application/json"
     },
     body: JSON.stringify({
-      image:
-        "https://www.samaa.tv/wp-content/uploads/2017/09/Karachi-640x405.jpg",
+      image: image,
       title: titleInput.value,
       location: locationInput.value
     })
@@ -226,10 +275,10 @@ form.addEventListener("submit", function(event) {
   // syncManager
   if ("serviceWorker" in navigator && "SyncManager" in window) {
     navigator.serviceWorker.ready.then(sw => {
+      let image = document.getElementById("randomIMG").getAttribute("src");
       let post = {
         _id: new Date().toISOString(),
-        image:
-          "https://www.samaa.tv/wp-content/uploads/2017/09/Karachi-640x405.jpg",
+        image: image,
         title: titleInput.value,
         location: locationInput.value
       };
