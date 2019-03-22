@@ -140,6 +140,23 @@ self.addEventListener("notificationclick", e => {
   console.log("[Service Worker] Notification is clicked ", e);
   console.log("[Service Worker] Notification is clicked ", notification);
   console.log("[Service Worker] Notification is clicked ", action);
+  
+  e.waitUntil(
+    console.log("[Service Worker] Notification is clicked ", action);
+    clients.matchAll().then(cli => {
+      let client = cli.find(c => {
+        return c.visibilityState === "visible";
+      });
+
+      if (client !== undefined) {
+        client.navigate(notification.data.url);
+        client.focus();
+      } else {
+        client.openWindow(notification.data.url);
+      }
+      notification.close();
+    })
+  );
 });
 
 self.addEventListener("notificationclose", e => {
@@ -148,7 +165,12 @@ self.addEventListener("notificationclose", e => {
 
 self.addEventListener("push", e => {
   console.log("[Service Worker] Notification is push ", e);
-  let data = { title: "Post", content: "Post Content" };
+  let data = {
+    title: "",
+    content: "",
+    url: "",
+    image: ""
+  };
   if (e.data) {
     data = JSON.parse(e.data.text());
   }
@@ -158,7 +180,11 @@ self.addEventListener("push", e => {
     badge: "/src/images/icons/apple-icon-57x57.png",
     dir: "ltr",
     lang: "en-US",
-    vibrate: [100, 50, 100]
+    vibrate: [100, 50, 100],
+    image: data.image,
+    data: {
+      url: data.url
+    }
   };
   e.waitUntil(self.registration.showNotification(data.title, option));
 });
