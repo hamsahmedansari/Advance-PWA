@@ -14,8 +14,51 @@ var RetakeButton = document.querySelector("#retake-btn");
 var RandomButton = document.querySelector("#random-btn");
 var imagePicker = document.querySelector("#image-picker");
 var imagePickerArea = document.querySelector("#pick-image");
-
+var locationBtn = document.querySelector("#location-btn");
+var locationLoader = document.querySelector("#location-loader");
 //
+locationBtn.addEventListener("click", function(event) {
+  if (!("geolocation" in navigator)) {
+    return;
+  }
+
+  locationBtn.style.display = "none";
+  locationLoader.style.display = "inline-block";
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      locationBtn.style.display = "inline";
+      locationLoader.style.display = "none";
+      let fetchedLocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      console.log(fetchedLocation);
+
+      addNotification(
+        `Your Location Lat:${fetchedLocation.lat} & Lng:${fetchedLocation.lng}`
+      );
+
+      locationInput.value = "Karachi";
+      document.querySelector("#manual-location").classList.add("is-focused");
+    },
+    function(err) {
+      console.log(err);
+      locationBtn.style.display = "inline";
+      locationLoader.style.display = "none";
+      alert("Couldn't fetch location, please enter manually!");
+      fetchedLocation = { lat: null, lng: null };
+    },
+    { timeout: 5000 }
+  );
+});
+
+function initializeLocation() {
+  if (!("geolocation" in navigator)) {
+    locationBtn.style.display = "none";
+  }
+}
+
 function initializeMedia() {
   if (!("mediaDevices" in navigator)) {
     navigator.mediaDevices = {};

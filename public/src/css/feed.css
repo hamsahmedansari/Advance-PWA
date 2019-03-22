@@ -59,3 +59,6 @@
 .mdl-snackbar {
   z-index: 1000000000000000;
 }
+#location-loader {
+  display: none;
+}
