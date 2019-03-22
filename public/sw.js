@@ -140,9 +140,8 @@ self.addEventListener("notificationclick", e => {
   console.log("[Service Worker] Notification is clicked ", e);
   console.log("[Service Worker] Notification is clicked ", notification);
   console.log("[Service Worker] Notification is clicked ", action);
-  
+
   e.waitUntil(
-    console.log("[Service Worker] Notification is clicked ", action);
     clients.matchAll().then(cli => {
       let client = cli.find(c => {
         return c.visibilityState === "visible";
