@@ -55,6 +55,8 @@
 }
 .shared-moment-card {
   margin: auto;
+  margin-bottom: 10px;
+  box-shadow: 0px 1px 9px 0px rgba(68, 68, 68, 0.51);
 }
 .mdl-snackbar {
   z-index: 1000000000000000;
