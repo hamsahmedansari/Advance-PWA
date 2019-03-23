@@ -107,9 +107,13 @@ captureButton.addEventListener("click", function(event) {
     canvas.width,
     videoPlayer.videoHeight / (videoPlayer.videoWidth / canvas.width)
   );
-  videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
-    track.stop();
-  });
+  try {
+    videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
+      track.stop();
+    });
+  } catch (error) {
+    console.log(error);
+  }
   addNotification(
     "Note Your Image is Not Uploading to anywhere & We Use Random Image"
   );
@@ -142,9 +146,13 @@ RandomButton.addEventListener("click", function(event) {
   var context = canvasElement.getContext("2d");
   let image = document.getElementById("randomIMG");
   context.drawImage(image, 0, 0, 400, 200);
-  videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
-    track.stop();
-  });
+  try {
+    videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
+      track.stop();
+    });
+  } catch (error) {
+    console.log(error);
+  }
   document.getElementById("randomDiv").removeChild(image);
   let random = Math.floor(Math.random() * 99) + 1;
   let img = document.createElement("img");
@@ -181,9 +189,14 @@ function closeCreatePostModal() {
   imagePickerArea.style.display = "none";
   videoPlayer.style.display = "none";
   canvasElement.style.display = "none";
-  videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
-    track.stop();
-  });
+  try {
+    videoPlayer.srcObject.getVideoTracks().forEach(function(track) {
+      track.stop();
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
   // createPostArea.style.display = "none";
 }
 
